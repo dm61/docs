@@ -55,10 +55,10 @@ If current BG is below a configured threshold (defaulting to 30mg/dL below the t
     else, if eventual BG is above target:
         calculate 30m temp required to get eventual BG down to target
         if required temp is > existing basal, issue the new high temp basal
-        else, if BG is below target:
-            calculate 30m temp required to get projected BG up to target
-            if required temp is < existing basal, issue the new low temp basal
-                if >30m @ 0 required, extend zero temp to 30m
+    else, if eventual BG is below target:
+        calculate 30m temp required to get eventual BG up to target
+        if required temp is < existing basal, issue the new low temp basal
+            if >30m @ 0 required, extend zero temp to 30m
 
 The maximum temp basal rate is set on the pump, but for safety purposes OpenAPS will set a lower maximum temp basal rate if necessary, as the minimum of:
 
@@ -78,7 +78,7 @@ In addition to adjusting the eventual BG predictions, the BGI calculation above 
 
 ####Bolus snooze
 
-By adjusting for BG deviations as described above, advanced OpenAPS implementations can avoid issuing low temp basals when BG is rising or remaining high after a meal, even without being informed about the fact that a meal has been consumed, or being provided a carbohydrate count. However, it is also useful for OpenAPS to avoid issuing low temp basals that counteract a meal bolus or prebolus when BG has not yet started to rise. To accomplish this, advanced OpenAPS implementations apply a “bolus snooze”, which causes OpenAPS to effectively go “hands off” as soon as a user executes a bolus, and only take action again if/when BG drops below the low glucose suspend threshold, rises more than expected or fails to come down after the mealtime rise, or starts to drop faster than expected. As a result, users can simply bolus appropriately for their meal, and then OpenAPS will wait and take over basal adjustment as necessary to bring BGs back into range after any mealtime excursions.
+By adjusting for BG deviations as described above, advanced OpenAPS implementations can avoid issuing low temp basals when BG is rising or remaining high after a meal, even without being informed about the fact that a meal has been consumed, or being provided a carbohydrate count. However, it is also useful for OpenAPS to avoid issuing low temp basals that counteract a meal bolus or pre-bolus when BG has not yet started to rise. To accomplish this, advanced OpenAPS implementations apply a “bolus snooze”, which causes OpenAPS to effectively go “hands off” as soon as a user executes a bolus, and only take action again if/when BG drops below the low glucose suspend threshold, rises more than expected or fails to come down after the mealtime rise, or starts to drop faster than expected. As a result, users can simply bolus appropriately for their meal, and then OpenAPS will wait and take over basal adjustment as necessary to bring BGs back into range after any mealtime excursions.
 
 The bolus snooze is currently implemented in advanced OpenAPS implementations by tracking bolus IOB (with an accelerated decay based on half the user’s normal DIA) separately from net IOB, and re-adding the BG impact of the bolus IOB (plus a small multiple) when deciding whether to set a low temporary basal. If the resulting “snooze BG” term is higher than the BG target, then OpenAPS will not set a low temporary basal, even if the eventual BG (based solely on net IOB) is much lower than target. This results in OpenAPS effectively widening the target BG range immediately after a bolus, and then gradually narrowing it over the next hour or two and gradually returning to normal behavior.
 
