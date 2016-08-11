@@ -2,7 +2,9 @@
 
 This section provides an introduction to initializing, configuring, and using the OpenAPS toolset. The purpose is to get you familiar with how the different commands work and to get you thinking about how they may be used to build your own closed loop. Make sure you have completed the [Setting Up the Raspberry Pi 2](../phase-0/rpi.md) and [Setting Up openaps](../phase-0/openaps.md) sections prior to starting.
 
-The [openaps readme](https://github.com/openaps/openaps/blob/master/README.md) has detailed information on the installation and usage of OpenAPS. You should take the time to read through it in detail, even if it seems confusing at first. There are also a number of example uses available in the [openaps-example](https://github.com/bewest/openaps-example) repository.
+If you haven't already, now that you have a working Raspberry Pi or similar system, it would be a good time to go through the [Guide to understanding the openaps toolkit](../../openaps-guide/index), which will give you a much better understanding of how the openaps tools work so you know what's happening as you follow the rest of this setup walkthrough, and know how to use the tools to investigate when something doesn't behave quite like you expect.
+
+The [openaps readme](https://github.com/openaps/openaps/blob/master/README.md) also has detailed information on the installation and usage of OpenAPS. You should take the time to read through it in detail, even if it seems confusing at first. There are also a number of example uses available in the [openaps-example](https://github.com/bewest/openaps-example) repository.
 
 Some familiarity with using the terminal will go a long way, so if you aren't
 comfortable with what `cd` and `ls` do, take a look at some of the Linux Shell
@@ -190,8 +192,9 @@ openaps use <my_dexcom_name> config --G5
 
 NB: The above command can also be used to change from a G4 to G5 system in an already functioning loop. If that doesn't work, update openaps.
 
-Ensure that the data is zoned correctly:
+Invoke the report and ensure that the data is zoned correctly:
 ```
+openaps report invoke raw-cgm/glucose-raw.json
 openaps use tz rezone  --date dateString --date display_time raw-cgm/glucose-raw.json
 openaps report add monitor/glucose.json JSON  tz rezone  --date dateString --date display_time raw-cgm/glucose-raw.json
 ```
@@ -210,6 +213,7 @@ Now, `openaps monitor-cgm` is available to pull in fresh CGM data from Dexcom.
 should return something like:
 
 ```
+timezones://tz
 medtronic://pump
 dexcom://cgm
 ```
