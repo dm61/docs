@@ -65,3 +65,7 @@ List of people who are working on closed loops:
 - Andrew H (Sydney, Australia)
 - Hichame Yessou (Milano, Italy)
 - Tim Street (London, UK)
+- Neal Harvey (Grants Pass, OR)
+- Patrick Metcalfe
+- Ken Webster (Hobart, Tas, Australia)
+- David Eddy (Madbury, NH)
