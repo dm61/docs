@@ -1,6 +1,6 @@
 # Configuring and Learning to Use openaps Tools
 
-This section provides an introduction to initializing, configuring, and using the OpenAPS toolset. The purpose is to get you familiar with how the different commands work and to get you thinking about how they may be used to build your own closed loop. Make sure you have completed the [Setting Up the Raspberry Pi 2](../phase-0/rpi.md) and [Setting Up openaps](../phase-0/openaps.md) sections prior to starting.
+This section provides an introduction to initializing, configuring, and using the OpenAPS toolset. The purpose is to get you familiar with how the different commands work and to get you thinking about how they may be used to build your own closed loop. Make sure you have completed the [Setting Up the Raspberry Pi 2](http://openaps.readthedocs.io/en/latest/docs/walkthrough/phase-0/rpi.html) and [have installed openaps via step 0 of the setup script process](http://openaps.readthedocs.io/en/latest/docs/walkthrough/phase-2/oref0-setup.html) sections prior to starting.
 
 If you haven't already, now that you have a working Raspberry Pi or similar system, it would be a good time to go through the [Guide to understanding the openaps toolkit](../../openaps-guide/index), which will give you a much better understanding of how the openaps tools work so you know what's happening as you follow the rest of this setup walkthrough, and know how to use the tools to investigate when something doesn't behave quite like you expect.
 
@@ -368,7 +368,7 @@ openaps use ns shell get entries.json 'count=10'
 openaps use ns shell upload treatments.json recently/combined-treatments.json
 ```
 
-(It would be good to show how to create a treatments.json report before ns shell `upload`...)
+[INSERT ACTUAL INSTRUCTIONS ON HOW TO CREATE a treatments.json report before ns shell `upload`]
 
 So we now have various uses for `ns`:
 
@@ -427,7 +427,7 @@ The query-params can be used to generate any query Nightscout can respond to.
 
 ### Unifying pump treatments in Nightscout
 
-To upload treatments data to Nightscout, prepare you zoned glucose, and pump
+To upload treatments data to Nightscout, prepare your zoned glucose, and pump
 model reports, and use the following two reports:
 
     openaps report add nightscout/recent-treatments.json JSON ns shell  format-recent-history-treatments monitor/pump-history.json model.json
@@ -446,7 +446,7 @@ upload treatments to Nightscout, if there is any data to upload.
 The first of the above reports and uses rely upon the existence of a model report:
 
     openaps report add settings/model.json JSON pump model
-    openaps report invoke model.json
+    openaps report invoke settings/model.json
 
 (what report needs to be defined and invoked in order to have monitor/pump-history.json defined?)
 

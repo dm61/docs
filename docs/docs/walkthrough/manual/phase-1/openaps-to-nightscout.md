@@ -1,3 +1,5 @@
+# Alternate Nightscout OpenAPS Instructions
+
 To get your OpenAPS viewed onto your Nightscout site, start by using the following tool:(It would be a good idea to be disconnected from your pump and do a Bolus Wizard so you can check the status of your Nightscout uploading.)
 $nightscout autoconfigure-device-crud
 To view your data on your Nightscout site, start by doing the following:
@@ -8,6 +10,9 @@ So this would be your actual https://myname.azurewebsites.net  or https://myname
 
 To test this: `openaps use ns shell preflight`\
 It should return "True"
+
+After the nightscout autoconfigure-device-crud has run successfully you may want to add ns.ini to your .gitignore file to protect your nightscout site location and secret key. You can find more information about this in the 
+<a href="https://openaps.readthedocs.io/en/latest/docs/walkthrough/phase-1/using-openaps-tools.html#backing-up-your-openaps-instance">Backing up your openaps instance</a> section.
 
 To get a good list of aliases:
 
