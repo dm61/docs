@@ -18,13 +18,15 @@ Here's what each symbol above means:
 
  "=" : BGI is doing what we expect
 
+The symbols are in reverse order beginning with the most recent deviation on the left and ending with the deviations 24 hours ago on the right.
+
 ### Autosens adjustments
 
 If you have papertrail setup (or are watching similarly through your rig itself), you can get an idea of how often, how much, and what autosens is adjusting.  For example, here's a screen capture using "adjust" as the search filter for one of my rigs.
 
 ![Autosens adjustments logged in papertrail](../Images/customize-iterate/autosens-adjust.png)
 
-As you can see, there are several types of adjustments that have occured during the day.  
+As you can see, there are several types of adjustments that have occurred during the day.  
 * In the morning, autosens was detecting some excess insulin sensitivity...so basals, targets, and ISF were adjusted down (by multiplier of 0.94).  
 * Later in the day (the blue boxed section), another adjustment was made to her BG targets because of a persistent high.  While not an adjustment by autosens itself, this is similar and can be set in preferences.json by setting the "adv_target_adjustments" to true.  Basically this preference will automatically lower BG targets (to as low as "eating soon" mode target of 80 mg/dl) for persistent high BGs.  
 * Later in the day, a couple brief periods of insulin sensitivity were short-lived.
@@ -33,7 +35,7 @@ As you can see, there are several types of adjustments that have occured during 
 ### Notes about autosensitivity:
 
 * "Autosens" works by reviewing the last 24 hours of data (so it's a rolling calculation with a moving window of 24 hours) and assessing deviations to determine if you are more sensitive or resistant than expected. If a pattern of such deviations is detected, it will calculate the adjustment that would've been required to bring deviations back to normal.
-* Autosens does NOT take into account meal/carb deviations; it only is able to assess the impact of insulin, and thus will adjust ISF, basals, and targets to help compensate for changes in sensitivity.
+* Autosens does NOT take into account meal/carb deviations; it only is able to assess the impact of insulin, and thus will adjust ISF, basals, and targets to help compensate for changes in sensitivity. 
 * Most users will notice the changed ISF numbers in their OpenAPS pill, along with changed targets. Note that a temp target will override the autosens-adjusted target. If you do not want autosens to adjust targets, that can be turned off by editing preferences.json (shortcut command `edit-pref`) and setting the "autosens_adjust_targets" to false.
 * The reason for autosens automatically adjusting targets is because the other adjustments it makes can't be fully applied without creating a feedback loop, so automatically adjusting the target it thinks it's shooting for lets autosens get BG closer to your actual target most of the time. When autosens needs to adjust basal and ISF, it can very straightforwardly use that for adjusting the temp basal it's about to set, by assuming a higher or low neutral temp basal to start from, and by calculating a bigger or smaller expected impact of current IOB.  What it can't do is calculate IOB in a way that reflects the adjusted basals and ISF, because doing so would change the autosens result, which would require recalculating IOB again, which would further change the result, in an unpredictable feedback loop. So instead, we simply acknowledge that the IOB calculation doesn't reflect sensitivity or resistance, and instead adjust the target to compensate. 
 * Autosens is limited by the safety multipliers in preferences.json. The defaults are:
@@ -41,7 +43,7 @@ As you can see, there are several types of adjustments that have occured during 
 "autosens_max": 1.2, <----multiplier for adjustments during insulin resistance
 "autosens_min": 0.7, <----multiplier for adjustments during insulin sensitivity
 ```
-We do not recommend widening these multipliers; but an easy way to turn "off" autosens after you've enabled it is so adjust the safety multipliers to 1. However, note that this will also disable autotune adjustments if you are running autotune. 
+We do not recommend widening these multipliers; but an easy way to turn "off" autosens after you've enabled it is to adjust the safety multipliers to 1. However, note that this will also disable autotune adjustments if you are running autotune. 
 
 ### Autosens vs Autotune
 

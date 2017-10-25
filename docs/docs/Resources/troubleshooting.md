@@ -66,7 +66,9 @@ OpenAPS uses git as the logging mechanism, so it commits report changes on each 
 
 You may see an error that references a loose object, or a corrupted git repository. To fix a corrupted git repository you can run `oref0-reset-git`, which will first run `oref0-fix-git-corruption` to try to fix the repository, and in case when repository is definitely broken it copies the .git history to a temporary location (`tmp`) and initializes a new git repo.
 
-It is recommended to run `oref0-reset-git` in cron so that if the repository gets corrupted it can quickly reset itself. 
+We recommend runing `oref0-reset-git` in cron so that if the repository gets corrupted it can quickly reset itself. 
+
+Finally, if you're still having git issues, you should `rm -rf ~/myopenaps/.git` . If you do this, git will re-initialize from scratch.
 
 Warning: do not run any openaps commands with sudo in front of it `sudo openaps`. If you do, your .git permissions will get messed up. Sudo should only be used when a command needs root permissions, and openaps does not need that. Such permission problems can be corrected by running `sudo chown -R pi.pi .git` in the openaps directory.  If you are using an Intel Edison, run `sudo chown -R edison.users .git`.
 
@@ -74,12 +76,50 @@ Warning: do not run any openaps commands with sudo in front of it `sudo openaps`
 
 If you are having errors related to disk space shortages as determined by `df -h` you can use a very lightweight and fast tool called ncdu (a command-line disk usage analyzer) to determine what folders and files on your system are using the most disk space. You can install ncdu as follows: `sudo apt-get install ncdu`. You can run it by running the following command: `cd / && sudo ncdu` and follow the interactive screen to find your disk hogging folders.
 
+An alternative approach to disk troubleshooting is to simply run the following command from the base unix directory after running `cd /`:
+
+`du -xh -d 3 | egrep "[1-9][0-9][0-9]M|[0-9]G"` (reports disk usage of all directories 3 levels deep from the current directory)
+
+Then, based on which folders are using the most space cd to those folders and run the above du command again until you find the folder that is using up the disk space.
+
+It is common that log files are the cause for disk space issues. If you determine that log file(s) are the problem, use a command like `less` to view the last entries in the logfile to attempt to figure out what is causing the logfile to fill up. To temporarily free up space, you can force the logfiles to rotate immediately by running the following command:
+
+`logrotate -f /etc/logrotate.conf`
+
 ## Environment variables
 
 If you are getting your BG from Nightscout or you want to upload loop status/results to Nightscout, among other things you'll need to set 2 environment variables: `NIGHTSCOUT_HOST` and `API_SECRET`. If you do not set and export these variables you will receive errors while running `openaps report invoke monitor/ns-glucose.json` and while executing `ns-upload.sh` script which is most probably part of your `upload-recent-treatments` alias.Make sure your `API_SECRET` is in hashed format. Please see [this page](https://github.com/openaps/oref0#ns-upload-entries) for details. Additionally, your `NIGHTSCOUT_HOST` should be in a format like `http://yourname.herokuapp.com` (without trailing slash). For the complete visualization guide use [this page](https://github.com/openaps/docs/blob/master/docs/Automate-system/vizualization.md) from the OpenAPS documentation.
 
 ## Wifi and hotspot issues
-See [wifi troubleshooting page](wifi.md)
+
+### My wifi connection keeps dropping and/or I keep getting kicked out of ssh
+There is a script that you can add to your root cron that will test your connection and reset it if it is down. Here is an example that runs every two minuntes (odd minutes). You could also do it every 5 minutes or less. Note, this does not have to be for an Edison, you can set this up for a Pi, etc as well.
+
+```
+cd ~/src
+git clone https://github.com/TC2013/edison_wifi
+cd edison_wifi
+chmod 0755 /home/edison/src/edison_wifi/wifi.sh
+```
+Next, add the script to your root cron. Note this is a different cron that what your loops runs on, so when you open it don't expect to see your loop and other items you have added.
+  * Log in as root ```su root```
+  * Edit your root cron ```crontab -e```
+  * Add the following line ```1-59/2 * * * * /home/edison/src/edison_wifi/wifi.sh google.com 2>&1 | logger -t wifi-reset```
+
+### I forget to switch back to home wifi and it runs up my data plan
+You can add a line to your cron that will check to see if <YOURWIFINAME> is avaiable and automatically switch to it if you are on a different network.
+  * Log in as root ```su root```
+  * Edit your root cron ```crontab -e```
+  * Add the following line ```*/2 * * * * ( (wpa_cli status | grep <YOURWIFINAME> > /dev/null && echo already on <YOURWIFINAME>) || (wpa_cli scan > /dev/null && wpa_cli scan_results | egrep <YOURWIFINAME> > /dev/null && udo pa_cli select_network $(wpa_clilist_networks | grep jsqrd | cut -f 1) && echo switched to <YOURWIFINAME> && sleep 15 && (for i in $(wpa_cli list_networks | grep DISABLED | cut -f 1); do wpa_cli enable_network $i > /dev/null; done) && echo and re-enabled other networks) ) 2>&1 | logger -t wifi-select```
+
+### I am having trouble consistently connecting to my wifi hotspot when I leave the house (iPhone)
+When you turn on your hotspot it will only broadcast for 90 seconds and then stop (even if it is flipped on). So, when you leave your house you need to go into the hotspot setting screen (and flip on if needed). Leave this screen open until you see your rig has connected. It may only take a few seconds or a full minute.
+
+### I am not able to connect to my wireless access point on my iPhone 
+Consider changing your iPhone's name...  In most cases iPhone will set the phone's SSID to something like "James’s iPhone"  By default Apple puts a curly apostrophe (’) into the SSID instead of a straight one (').  Your choices from here are either paste in the curly apostrophe in wpa_supplicant.conf, or change the name on the phone.  To change the name on the iPhone:
+   * On your iOS device, go to Settings > General > About.
+   * Tap the first line, which shows the name of your device.
+   * Rename your device, then tap Done.
 
 ## Common error messages
 
@@ -151,6 +191,7 @@ Below is correct definition
 ### Could not get subg_rfspy state or version. Have you got the right port/device and radio_type?
 
 Basic steps using an Intel Edison with Explorer Board, checking with `openaps mmtune` to see if it is resolved yet:
+  * Make sure the Explorer board has not become loose and is sitting correctly on the Edison board
   * Double check that your port in pump.ini is correct
   * Check that your rig is in close range of your pump
   * Check that your pump battery is not empty
@@ -160,6 +201,7 @@ Basic steps using an Intel Edison with Explorer Board, checking with `openaps mm
   * Remove and re-add your pump device
 
 If you are using an Intel Edison with Explorer Board, and that does not resolve your issue, or if the two LEDs next to the microUSB ports on your Explorer board stay on even after an mmtune, you may need to re-flash your radio chip:
+  * Stop the reboot loop: `sudo service cron stop && killall -g oref0-pump-loop && shutdown -c`
   * Install ccprog tools on your Edison: `cd ~/src; git clone https://github.com/ps2/ccprog.git`
   * Build (compile) ccprog so you can run it: `cd ccprog; make ccprog`
   * Flash the radio chip:

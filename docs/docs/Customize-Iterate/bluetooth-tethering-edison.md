@@ -38,12 +38,13 @@ A few things to know about using your phone's hotspot feature:
 <TR><TH>iPhone<TD>Yes<TD>Users have experienced various levels of success with the iPhone bluetooth tethering and when the rig switches  between wifi and BT<TD>Not Applicable. Experimental version of Loop to do something similar doesn't yet have feedback.
 <TR><TH>Acer Phone<TD>No<TD>Many data drops on the bluetooth connection for rig. Recommended to avoid.<TD>xDrip compatibility is poor - numerous drops throughout the day.
 <TR><TH>Samsumg Galaxy S7 Edge (G935F) Android 7.0<TD>Yes<TD>Excellent BT tether using apps 'Bt AutoTether' and 'BT Tether'<TD>xDrip+ with G5 > 95% capture.
+<TR><TH>Samsung Galaxy A3 (2016) Android 6<TD>Yes<TD>Excellent BT tether using app 'Blue Car Tethering'<TD>xDrip+ with G4, reliable capture using xDrip+ and using normal tether when running with Dexcom in G4-upload mode
 </TABLE>
 
 ## Configure Bluetooth tethering on Edison running Jubilinux [optional]
 
+This section is completed by the install method found here http://openaps.readthedocs.io/en/latest/docs/Build%20Your%20Rig/OpenAPS-install.html#copy-and-paste-to-run-the-wifi-and-oref0-setup-scripts . If you selected the option of installing Bluetooth at a later time during installation you may skip to Bluetooth Setup, the next section. 
 ### Install dependencies 
-
 You will need to get the MAC address from your phone or whatever device you are using.
 * On Android, go to Settings/About Phone/ Status; you will find your Bluetooth address looking like AA:BB:CC:DD:EE:FF 
 * On iPhone, go to Settings/General/About; it will be under Bluetooth and will look like AA:BB:CC:DD:EE:FF
@@ -188,7 +189,7 @@ bnep0     Link encap:Ethernet  HWaddr 98:4f:ee:03:a6:91
 
 * About a minute after wifi comes back on (terminal session restores), your Edison should automatically disconnect the Bluetooth connection.
 
-Finally, it's time to take a walk.  About a minute after walking out of range of your home wifi, you should see that a device is connected to your phone via Bluetooth. Shortly after that you should see things update on Nightscout.  About a minute afer you come home, it should reconnect to wifi and automatically disconnect Bluetooth.
+Finally, it's time to take a walk.  About a minute after walking out of range of your home wifi, you should see that a device is connected to your phone via Bluetooth. Shortly after that you should see things update on Nightscout.  About a minute after you come home, it should reconnect to wifi and automatically disconnect Bluetooth.
 
 ### Additional App requirement on Android to enable automatic BT Tethering reconnects
 
