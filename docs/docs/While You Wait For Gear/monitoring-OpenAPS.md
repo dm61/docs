@@ -7,18 +7,18 @@ There are two general groups of ways to monitor your rigs:
 
 ## The main ways of monitoring your rig ONLINE include:
 
-* [Papertrail](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#papertrail-remote-monitoring-of-openaps-logs-recommended)
-* [Accessing via SSH (either using an app on your phone, or your computer)](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#accessing-your-rig-via-ssh)
-* [Nightscout](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/nightscout-setup.html)
+* [Papertrail](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#papertrail-remote-monitoring-of-openaps-logs-recommended)
+* [Accessing via SSH (either using an app on your phone, or your computer)](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#accessing-your-rig-via-ssh)
+* [Nightscout](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/nightscout-setup.html)
 * Pebble watch (your watchface of choice, such as [Urchin](https://github.com/mddub/urchin-cgm))
 
 ********************************
 
 ## The main ways of monitoring your rig OFFLINE include:
 
-* [Pancreabble](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#pancreabble-offline-connection-to-pebble-watch) (offline connection to your Pebble watch)
-* For Android users: "[Hot Button](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#hot-button-for-android-users)"
-* For any phone type: [Creating a web page that can be accessed on the phone via the rig's IP address](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#offline-web-page-from-rig-for-any-phone-user)
+* [Pancreabble](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#pancreabble-offline-connection-to-pebble-watch) (offline connection to your Pebble watch)
+* For Android users: "[Hot Button](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#hot-button-for-android-users)"
+* For any phone type: [Creating a web page that can be accessed on the phone via the rig's IP address](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#offline-web-page-from-rig-for-any-phone-user)
 
 ********************************
 
@@ -31,9 +31,9 @@ At this point, if you're not yet set up on OpenAPS, you won't quite be ready to 
 ## Accessing your rig via SSH
 
 See below for different ways to access your rig:
-* [If your computer and rig are on the same wifi network](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#if-your-computer-and-rig-are-on-the-same-wifi-network)
-* [If your computer and rig are on different wifi networks](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#if-your-computer-and-rig-are-on-different-wifi-networks)
-* [If your iPhone and rig are on the same wifi network](http://openaps.readthedocs.io/en/dev/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#if-your-iphone-and-rig-are-on-the-same-wifi-network)
+* [If your computer and rig are on the same wifi network](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#if-your-computer-and-rig-are-on-the-same-wifi-network)
+* [If your computer and rig are on different wifi networks](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#if-your-computer-and-rig-are-on-different-wifi-networks)
+* [If your iPhone and rig are on the same wifi network](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/monitoring-OpenAPS.html#if-your-iphone-and-rig-are-on-the-same-wifi-network)
 
 ********************************
 
@@ -47,15 +47,15 @@ See below for different ways to access your rig:
 
 * Use the command `ssh root@edisonhost.local` (**or whatever you named your edison host**, in the example below, the hostname was edison1).  If this is your first time logging in to the rig on the computer, you may get a message about the authenticity of the host and whether you want to add the key fingerprint to the list of known hosts.  Go ahead and answer yes.  You will be asked for the password for the rig...enter your root password that you setup in Phase 0 (the default was edison).  Realize that keystrokes will not appear as you enter the password.  A successful login will result in a screen similar to below.
 
-![Mac ssh login](../../Images/access_mac1.png)
+![Mac ssh login](../Images/access_mac1.png)
 
 * If you get an error about "could not resolve hostname", it is likely that your rig is actually connected to a different wifi network than the computer. Try the screen method (directions below) for connecting to your rig.
 
-![Mac ssh unknown host](../../Images/access_mac2.png)
+![Mac ssh unknown host](../Images/access_mac2.png)
 
 * If you get an scary looking error about "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!" that is likely because you are attempting to login to a rig that has the same hostname as a previous rig that has been logged into on the computer.  (This is why you want to use unique hostnames if you are going to have multiple rigs.)  You can delete the history of known hosts for the rig by entering the commands `cd .ssh` and then `rm known_hosts`.  This will delete the log of known hosts on your computer.  There's no significant downside to removing the known_host log, except that you will need to answer yes to the key fingerprint additions again for the first time you login to old rigs again.  After you delete the known hosts, you can use the `ssh root@edisonhost.local` command to login, as described above.
 
-![Mac spoofing error](../../Images/access_mac3.png)
+![Mac spoofing error](../Images/access_mac3.png)
 
 #### For Windows computers
 
@@ -63,99 +63,61 @@ See below for different ways to access your rig:
 
 * Click the SSH radio button and then enter the IP address of the rig on the "Host Name" line in PuTTY.  
 
-![Windows IP address for rig](../../Images/access_5.png)
+![Windows IP address for rig](../Images/access_5.png)
 
 * If you do not know the IP address of the rig, you can obtain it by first logging on using Serial connection (described below) and using the command `ifconfig`.
 
-![Windows IP address for rig](../../Images/access_4.png)
+![Windows IP address for rig](../Images/access_4.png)
 
 * Click the "Open" button in the PuTTY window and, if this is your first time logging into the rig using PuTTY using ssh, you may see a warning regarding the server's host key.  Click yes to add the host key to PuTTY's cache. 
 
-![Windows key hostname](../../Images/access_6.png)
+![Windows key hostname](../Images/access_6.png)
 
 * Login using login name `root` and password is whatever you changed it to during setup in Phase 0.  The default password was edison.  As you type the password, no keystrokes will appear on the screen.  Successful login will leave you at a prompt for the root user.
 
-![Windows IP address for rig](../../Images/access_7.png)
+![Windows IP address for rig](../Images/access_7.png)
 
 ### If your computer and rig are on different wifi networks
 
-![If your computer and rig are on different wifi networks](../../Images/Computer_rig_different_wifi.png)
+![If your computer and rig are on different wifi networks](../Images/Computer_rig_different_wifi.png)
 
 **Access to the rig will need a cable to connect the UART port on the rig with the USB port on the computer.  You will need a cable capable of transmitting data.  If you try all of the steps below and are unsuccessful at connecting, try a new cable.**
 
 #### For Mac computers
 
-* Use the Terminal app on the Mac, or follow [these directions for Windows](http://openaps.readthedocs.io/en/latest/docs/walkthrough/phase-0/setup-edison.html#if-you-re-using-a-windows-pc-for-console)
+* Use the Terminal app on the Mac, or follow [these directions for Windows](http://openaps.readthedocs.io/en/latest/docs/Resources/Edison-Flashing/all-computers-flash.html#if-you-re-using-a-windows-pc-for-console)
 
 * If you're using a Mac, use the command `sudo screen /dev/tty.usbserial-* 115200` to enable “screen” mode.  You will be prompted to enter a password.  Enter your **computer's password** not the rig's password here.
 
-![Mac Screen first password](../../Images/access_mac_password.png)
+![Mac Screen first password](../Images/access_mac_password.png)
 
-* You may see a blank screen.  Press RETURN to bring up the edison’s login screen.  Login as `root` and use your root password (you should have changed it from the default of `edison` during the setup of the rig - if not, please [go back and do so now](http://openaps.readthedocs.io/en/latest/docs/walkthrough/phase-0/setup-edison.html#initial-edison-setup).  A successful login will look like below.
+* You may see a blank screen.  Press RETURN to bring up the edison’s login screen.  Login as `root` and use your root password (you should have changed it from the default of `edison` during the setup of the rig - if not, please [go back and do so now](http://openaps.readthedocs.io/en/latest/docs/Resources/Edison-Flashing/all-computers-flash.html#initial-edison-setup).  A successful login will look like below.
 
-![Mac Screen successful login](../../Images/access_mac_screen.png)
+![Mac Screen successful login](../Images/access_mac_screen.png)
 
 * If instead, you see a message at the bottom of the screen that says "Sorry, could not find a PTY." that usually means the system has not cleared a previous screen session.  If you only had the rig connected by one cable in the UART port on rig, you can simply unplug the rig from the computer and move to a new USB port on the computer.  If you don't have any "new" USB ports that were not used by the previous login attempt, then close out terminal app, restart the computer, and try again.  This will clear the error.
 
-![Mac Screen message for busy port](../../Images/access_mac_sorry.png)
+![Mac Screen message for busy port](../Images/access_mac_sorry.png)
 
 * If instead you see a message at the bottom of the screen that says "Cannot exec '/dev/tty.usbserial-*': No such file or directory", double check that you have your rig and computer connected via the rig's UART port.  Using the OTG port will cause this error message.  Or typos in the screen command will have same result.  Double check your spelling, or better yet...use copy and paste whenever possible.
 
-![Mac Screen message for OTG port](../../Images/access_mac_no_exec.png)
+![Mac Screen message for OTG port](../Images/access_mac_no_exec.png)
 
 #### For Windows Users
 
 * Navigate to your Control Panel and then to Device Manager.  Click on the Ports to open your USB serial port.  Find the COM port that the rig is connected to.  In the screenshot below, COM7.  Note: different USB ports will have different numbers.  If you regularly plug your rig into the computer and use this connection type, you may need to make sure you update the COM number in the steps below if you are switching between different USB ports.  
 
-![Windows COM port number](../../Images/access_1.png)
+![Windows COM port number](../Images/access_1.png)
 
 * Open PuTTY program.  Click on the Serial radio button, enter the COM number you got from the previous step into the Serial line number and change the speed to 115200.  Click on Open button.
 
-![Windows serial setup](../../Images/access_2.png)
+![Windows serial setup](../Images/access_2.png)
 
 * Enter `root` for the login and the password is whatever you changed it to during setup in Phase 0.  The default password was edison.  As you type the password, no keystrokes will appear on the screen.  Successful login will leave you at a prompt for the root user as shown below.
 
-![Windows serial login success](../../Images/access_3.png)
+![Windows serial login success](../Images/access_3.png)
 
 
-### If your iPhone and rig are on the same wifi network
-
-![If your iPhone and rig are on the same wifi network](../../Images/Iphone_rig_same_wifi.png)
-
-One of the most convenient ways to do quick edits on your rig’s settings may be by using an app on your iPhone.  You will need to make sure your rig and your iPhone are sharing the same network (e.g., home wifi, mifi, or personal hotspot) and here are the instructions.  Each connection point will need it’s own “host” setup in the app.
-
-* Download “Termius SSH Shell/Console/Terminal” from iPhone app store
-
-* Set up a new “host” in the app with the following information.  Remeber, you will need to setup a new "host" for every rig and every wifi connection that you will use to connect.  For example, I have three rigs that I regularly connect to on my home wifi network; edison1 (the rig my daughter regularly wears), edison2 (the rig we keep in her bedroom), and edison3 (the rig we keep in the living room).  Since my daughter's mobile rig (edison1) can sometimes need to be accessed while we are on the road, I also have a host setup for when her rig is connected to my phone's hotspot.
-
-```
-Alias:     enter a name that will remind you which rig and what network (such as rig name @ home wifi, iphone hotspot, or mifi device since each connection will have a unique IP address)
-Username:     root
-Hostname:     enter the IP address of the rig on that particular wifi network (see below if you need help finding the IP address)
-Password:     enter your rig's root password 
-```
-* Clicking on the “host” in the app will launch an ssh connection with the rig and you can use the iPhone to access the rig’s software.  They must be on the same network as the “host” connection specifies though, or else the connection will fail.
-
-![Terminus app hostnaming](../../Images/terminus.png)
-
-### How to determine the IP address of your rig?
-
-Private IP addresses are assigned for devices and are unique to the connection.  So, your rig’s IP address when using your iPhone’s hotspot will be different than your rig’s IP address when using your home wifi.  So, you’ll need to find the IP address for the particular connection you are using.
-
-* If rig and iPhone connected to a mifi device, the mifi device may list connected devices and IP addresses.  Look for your edison rig on there.
-
-* If iPhone and rig are connected via the iPhone’s personal hotspot, you can download an app such as iNet to scan the network for devices and find your edison rig.  The IP address will be listed with the scan information.
-
-
-* If the rig is accessible by computer (by either method listed above, ssh or console) **AND** the iPhone and rig are on same network as each other, you have a couple options.  You can login on Terminal app and use `ifconfig` to read the wlan0 inet address
-
-![ifconfig example](../../Images/ifconfig_example.png)
-
-OR login to your router to see the list of connected devices and find your edison rig.  Google your router’s brand name and “router login” (e.g., Netgear router login) to find out how to access your router’s administrative area.
-
-### Shortcut to see IP and wifi network name that your rig is on
-
-**Tip**: for rigs updated ([here is how to update](http://openaps.readthedocs.io/en/latest/docs/walkthrough/phase-2/update-your-rig.html)) after 2/7/17, you can also now type `wifi` hit enter; it will bring up the last 100 lines of the network log so you can see your IP address AND the network name of the wifi that your rig is on.
 
 ********************************
 ### Papertrail remote monitoring of OpenAPS logs (RECOMMENDED) 
@@ -170,7 +132,7 @@ Go to http://papertrailapp.com and setup a new account.  Choose to setup a new s
 
 #### System logging 
 
-Login to your rig. If you need help with that, please see the [Accessing Your Rig](http://openaps.readthedocs.io/en/latest/docs/walkthrough/phase-2/accessing-your-rig.html) section of these docs.  Copy and paste the code that is displayed in your new system setup's shaded box, as shown in the red arrowed area in the screen shot above. This will setup papertrail for just your syslogs.  But, we now will need to add more (aggregate) your logs such as pump-loop and ns-loop.
+Login to your rig. If you need help with that, please see the [Accessing Your Rig](http://openaps.readthedocs.io/en/latest/docs/While You Wait For Gear/monitoring-OpenAPS.html#accessing-your-rig-via-ssh) section of these docs.  Copy and paste the code that is displayed in your new system setup's shaded box, as shown in the red arrowed area in the screen shot above. This will setup papertrail for just your syslogs.  But, we now will need to add more (aggregate) your logs such as pump-loop and ns-loop.
 
 #### Aggregating logs
 
@@ -275,7 +237,7 @@ Unfortunately, Papertrail does not currently have an app for use on mobile devic
 
 * `pump-loop.log` to see just your pump loop...similar to using the `l` command when logged into your rig.  
 
-* `network` will show just your oref0-online results and whether/which wifi network your rig is connected to.  If you see results of `192.168.1.XX`, then your rig is likely connected to a wifi network.  If you see results of `172.20.10.XX` then your rig is likely connected to your phone's personal hotspot.  If you see `error, cycling network` results, you should check out troublehsooting steps.
+* `network` will show just your oref0-online results and whether/which wifi network your rig is connected to.  If you see results of `192.168.1.XX`, then your rig is likely connected to a wifi network.  If you see results of `172.20.10.XX` then your rig is likely connected to your phone's personal hotspot.  If you see `error, cycling network` results, you should check out troubleshooting steps.
 
 * `pump-loop.log adjust` will show your basal and ISF adjustments being made by autosens, if enabled.
 
@@ -289,7 +251,7 @@ Once you get your desired filters saved, it is an easy process to make them more
 
 #### Troubleshooting using Papertrail
 
-Papertrail can be very valuable to quickly troubleshoot a rig, becuase it is quite easy to see all the loops that log information about your rig's actions.  BUT, the way that the information comes into Papertrail is based on the time the action took place.  So, you'll be seeing information stream by that may or may not help you troubleshoot WHICH area your issues are.
+Papertrail can be very valuable to quickly troubleshoot a rig, because it is quite easy to see all the loops that log information about your rig's actions.  BUT, the way that the information comes into Papertrail is based on the time the action took place.  So, you'll be seeing information stream by that may or may not help you troubleshoot WHICH area your issues are.
 
 First, let's start with messages that **ARE NOT ERRORS**
 
@@ -311,7 +273,7 @@ Therefore when you start to troubleshoot, **USE YOUR FILTERS** to narrow down th
 
 **PUMP TUNING**
 
-Use `pump-loop` search filter to start with.  What messages are you seeing?  Poor pump comms are one of the most frequent causes of loops stopping.  If you see `916, 0, -99` tuning results, then you know that your rig is not getting a useable communication with your pump.  Try moving your pump and rig closer together.  Check if your pump battery is good.  
+Use `pump-loop` search filter to start with.  What messages are you seeing?  Poor pump comms are one of the most frequent causes of loops stopping.  If you see `916, 0, -99` tuning results, then you know that your rig is not getting a usable communication with your pump.  Try moving your pump and rig closer together.  Check if your pump battery is good.  
 
 ![papertrail poor pump tune](../Images/poor_tuning.png)
  
@@ -321,7 +283,7 @@ Use `pump-loop` search filter to start with.  What messages are you seeing?  Poo
 
 **GIT LOCK**
 
-There are files that get written to in a directory called `/root/myopenaps/.git`  Sometimes a process crashes and causes a file in that directory to get locked and the writing can't continue.  Your loop may fail as a result.  This can be a short term issue, and it could resolve on it's own...other times it may require you to delete the file that is causing the problem.  For example, below is a short-term error.  The message says there is a problem in the `/root/myopenaps/.git` and I may need to remove that file to get things going again.  However, you can also see that a few minutes later, the problem resolved on its own.
+There are files that get written to in a directory called `/root/myopenaps/.git`  Sometimes a process crashes and causes a file in that directory to get locked and the writing can't continue.  Your loop may fail as a result.  This can be a short term issue, and it could resolve on its own...other times it may require you to delete the file that is causing the problem.  For example, below is a short-term error.  The message says there is a problem in the `/root/myopenaps/.git` and I may need to remove that file to get things going again.  However, you can also see that a few minutes later, the problem resolved on its own.
 
 If you find a .git lock error is causing a long period of time where your loop is failing, you can remove the file, as the error suggests by using `rm -rf /root/myopenaps/.git/filename`  or you can delete the whole `.git` directory (it will get rebuilt by the loop automatically) with `rm -rf /root/myopenaps/.git`
 
@@ -468,7 +430,7 @@ in you APS directory there is a file called 'pancreoptions.json'
 "urchin_loop_status": false, <--- Gives a message on urchin watchface that it's running
 "urchin_iob": true,   <--- Gives a message on urchin watchface of current IOB
 "urchin_temp_rate": false, <--- Gives a message on urchin watchface of current temp basal
-"notify_temp_basal": false <--- Notificaiton of temp basal when one shows up in enact/suggested.json
+"notify_temp_basal": false <--- Notification of temp basal when one shows up in enact/suggested.json
 ```
 note only one of the messages for the urchin watchface can be true at once
 
@@ -480,16 +442,26 @@ By default the urchin_loop_on, and urchin_iob is set to true. You must manually 
 ### Hot Button - for Android users
 
 #### Purpose
-[Hot Button app](https://play.google.com/store/apps/details?id=crosien.HotButton) can be used to monitor and control OpenAPS using SSH commands. It is especialy useful for offline setups. Internet connection is not required, it is enough to have the rig connected to your android smartphone using bluetooth tethering.
+[Hot Button app](https://play.google.com/store/apps/details?id=crosien.HotButton) can be used to monitor and control OpenAPS using SSH commands. It is especially useful for offline setups. Internet connection is not required, it is enough to have the rig connected to your android smartphone using bluetooth tethering.
 
 #### App Setup 
-To setup the button you need to long click. Setup the Server Settings and set them as default. For every other button you can load them.
+To set up a button you need to long click. Then go to Server Settings. For Server's IP, add the IP address that your rig has when connected to your phone. Under Server's Port, add the port number 22. Under Authenication Settings, you need to add your rig's username, password, and the root password. Be sure that the password for the private key file is blank unless you are setting up a key authentication (which is not necessary). Go back to the previous button setup screen and click "Set as default!". This will save all your server settings so that you can easily load them onto each new button you make. 
 
 #### Basic commands
-To the Command part of the button setup you can write any command which you would run in the ssh session. For example to show the automatic sensitivity ratio, you can set:
-`cat /root/myopenaps/settings/autosens.json`
+For the Command part of the button setup you can write any command which you would run in the ssh session. (If you are running a command that would need to be run with root privileges, be sure to check the box "Execute as root!") Here are some suggested commands:
 
-After button click the command is executed and the results are displayed in the black text area bellow the buttons. 
+To show Automatic Sensitivity ratio, you can set:
+`cat /root/myopenaps/settings/autosens.json`
+To show the last enacted loop, you can set:
+`cat /root/myopenaps/enact/enacted.json`
+To show your rig's network name, you can set:
+`iwgetid -r`
+To show your rig's battery status, you can set:
+`cat /root/myopenaps/monitor/edison-battery.json`
+To show your pump's battery status, you can set:
+`cat /root/myopenaps/monitor/battery.json`
+
+After setting up the button, simply click it to execute the command. The results are displayed in the black text area below the buttons. You can change the font size of the text in the box, and you can add more buttons under the main Hot Button menu.  
 
 #### Temporary targets
 It is possible to use Hot Button application for setup of temporary targets.  This [script](https://github.com/lukas-ondriga/openaps-share/blob/master/start-temp-target.sh) generates the custom temporary target starting at the time of its execution. You need to edit the path to the openaps folder inside it.
@@ -508,6 +480,56 @@ To speed up the command execution you can add to the `/etc/ssh/sshd_config` the 
 `UseDNS no`
 
 ********************************
+### HTTP Widget Offline Monitoring (Android Only)
+Android "HTTP widget" allows you to show text inside the widget, perfect for OpenAPS monitoring without using Nightscout (in case no internet access is available).
+
+A. Install "HTTP widget" on your Android phone:
+
+https://play.google.com/store/apps/details?id=net.rosoftlab.httpwidget1&hl=en
+
+B. Install jq:
+
+`sudo apt-get install jq`
+
+C. Add a cron line to your crontab to start the Simple HTTP Server:
+
+First `crontab -e` and then at the bottom of the page, then add
+
+`@reboot cd /root/myopenaps/enact && python -m SimpleHTTPServer 1337`.
+
+Then ctrl-X and select y to keep changes, and then Enter to keep the same file name.
+
+D. Add a line to your openaps alias in your openaps.ini:
+
+First `cd myopenaps` and then `nano openaps.ini`.
+
+Scroll down until you see the "Alias" list. Then copy and paste the following text into a new line directly under the other alias entires. 
+
+`http-widget = ! bash -c "( jq .timestamp ~/myopenaps/enact/enacted.json | awk '{print substr($0,13,5)}' | tr '\n' ' ' && echo \"(last enact)\" && jq -r .reason ~/myopenaps/enact/enacted.json && echo -n 'TBR: ' && jq .rate ~/myopenaps/enact/enacted.json && echo -n 'IOB: ' && jq .IOB ~/myopenaps/enact/enacted.json && echo -n 'Autosens: ' && jq .ratio ~/myopenaps/settings/autosens.json && echo -n 'Edison: ' && (~/src/EdisonVoltage/voltage short) | awk '{print $2,$1}' && echo -n 'Pump: ' && cat ~/myopenaps/monitor/reservoir.json && echo -n 'U ' && jq .voltage ~/myopenaps/monitor/battery.json | tr '\n' 'v' && echo \" \")> ~/myopenaps/enact/index.html"`
+
+E. Modify the openaps pump-loop cron line (openaps http-widget needs to be run each minute):
+
+Enter `crontab -e` again.
+
+Then find the pump-loop cron line (looks similar to `* * * * * cd /root/myopenaps && ( ps aux | grep -v grep | grep -q 'openaps pump-loop' || openaps pump-loop ) 2>&1 | tee -a /var/log/openaps/pump-loop.log`) 
+
+And then add this to the end of it `&& openaps http-widget > /dev/null 2>&1 `.
+
+When you're finished it should look something like this:
+
+`* * * * * cd /root/myopenaps && ( ps aux | grep -v grep | grep -q 'openaps pump-loop' || openaps pump-loop ) 2>&1 | tee -a /var/log/openaps/pump-loop.log && openaps http-widget > /dev/null 2>&1 ` 
+
+Ctrl-X and select y to save changes.
+
+F. Add Widget:
+
+On your Android phone, add an HTTP widget as you would normally add widgets. Then set up the http with your rig IP address using port 1337. 
+
+NOTE: BE SURE your phone and rig are on the same network, i.e. BT tethered or wifi hotspot. This widget will also work when your rig is online with a wifi connection, as long as your phone and rig are on the same network.
+
+G. Add Widget to Sony Smart Watch 3 or other Android Wear:
+
+Using the Wearable Widgets app, you can see the HTTP Widget on your watch. 
 
 ### Offline web page from rig - for any phone user
 
@@ -547,8 +569,8 @@ In this case the script is running from the /root directory and I am publishing 
 
 C. Accessing via your phone
 
-**IPHONE USERS:** To access this from an iphone browser, enter something like the following: http://172.20.10.x:1337/index.html and you should receive an unformatted html page with the data in it. If you want to improve the output for a browser, the script can be modified to generate html tags that will allow formatting and could provide colouring if various predicted numbers were looking too low.
+**IPHONE USERS:** To access this from an iphone browser, enter something like the following: http://172.20.10.x:1337/index.html and you should receive an unformatted html page with the data in it. The value you need will be the ip address you see when you first set up bluetooth on your rig, and can be found using `ifconfig bnep0` when your rig is connected to your phone via bluetooth.  If you want to improve the output for a browser, the script can be modified to generate html tags that will allow formatting and could provide colouring if various predicted numbers were looking too low.
 
-**ANDROID USERS:** On Android, you can download http-widget (https://play.google.com/store/apps/details?id=net.rosoftlab.httpwidget1&hl=en_GB) and add a widget to your home screen that will display this data.
+**ANDROID USERS:** On Android, you can download http-widget (https://play.google.com/store/apps/details?id=net.rosoftlab.httpwidget1&hl=en_GB) and add a widget to your home screen that will display this data. You will need the IP address that your rig uses. If you are using xdrip as your glucose data source, it is the same as the value you use there.
 
 **SAMSUNG GEAR S3 WATCH USERS:** If you use a Samsung Gear S3 watch, you can use the above http-widget with Wearable Widgets (http://wearablewidgets.com) to view what OpenAPS is doing locally, without internet connection.

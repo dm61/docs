@@ -66,13 +66,25 @@ OpenAPS uses git as the logging mechanism, so it commits report changes on each 
 
 You may see an error that references a loose object, or a corrupted git repository. To fix a corrupted git repository you can run `oref0-reset-git`, which will first run `oref0-fix-git-corruption` to try to fix the repository, and in case when repository is definitely broken it copies the .git history to a temporary location (`tmp`) and initializes a new git repo.
 
-It is recommended to run `oref0-reset-git` in cron so that if the repository gets corrupted it can quickly reset itself. 
+We recommend runing `oref0-reset-git` in cron so that if the repository gets corrupted it can quickly reset itself. 
+
+Finally, if you're still having git issues, you should `rm -rf ~/myopenaps/.git` . If you do this, git will re-initialize from scratch.
 
 Warning: do not run any openaps commands with sudo in front of it `sudo openaps`. If you do, your .git permissions will get messed up. Sudo should only be used when a command needs root permissions, and openaps does not need that. Such permission problems can be corrected by running `sudo chown -R pi.pi .git` in the openaps directory.  If you are using an Intel Edison, run `sudo chown -R edison.users .git`.
 
 ## Debugging Disk Space Issues
 
 If you are having errors related to disk space shortages as determined by `df -h` you can use a very lightweight and fast tool called ncdu (a command-line disk usage analyzer) to determine what folders and files on your system are using the most disk space. You can install ncdu as follows: `sudo apt-get install ncdu`. You can run it by running the following command: `cd / && sudo ncdu` and follow the interactive screen to find your disk hogging folders.
+
+An alternative approach to disk troubleshooting is to simply run the following command from the base unix directory after running `cd /`:
+
+`du -xh -d 3 | egrep "[1-9][0-9][0-9]M|[0-9]G"` (reports disk usage of all directories 3 levels deep from the current directory)
+
+Then, based on which folders are using the most space cd to those folders and run the above du command again until you find the folder that is using up the disk space.
+
+It is common that log files are the cause for disk space issues. If you determine that log file(s) are the problem, use a command like `less` to view the last entries in the logfile to attempt to figure out what is causing the logfile to fill up. To temporarily free up space, you can force the logfiles to rotate immediately by running the following command:
+
+`logrotate -f /etc/logrotate.conf`
 
 ## Environment variables
 
@@ -151,6 +163,7 @@ Below is correct definition
 ### Could not get subg_rfspy state or version. Have you got the right port/device and radio_type?
 
 Basic steps using an Intel Edison with Explorer Board, checking with `openaps mmtune` to see if it is resolved yet:
+  * Make sure the Explorer board has not become loose and is sitting correctly on the Edison board
   * Double check that your port in pump.ini is correct
   * Check that your rig is in close range of your pump
   * Check that your pump battery is not empty
