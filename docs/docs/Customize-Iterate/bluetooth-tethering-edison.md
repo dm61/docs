@@ -28,10 +28,12 @@ A few things to know about using your phone's hotspot feature:
 <TABLE border="1"
           summary="This table gives details about various cellphones used with BT Tethering with OpenAPS rigs">
 <TR><TH>Cellphone<TH>Works with Bluetooth Tethering?<TH>Issues/Experiences with BT<TH>Use with xDrip/xDripAPS and Dexcom G5
+<TR><TH>Google Pixel 2 with Android 8<TD>Yes<TD>Supports tethering to both Wifi and Cellular network. No issues switching.<TD>
 <TR><TH>LG Nexus 5X with Android 7<TD>Yes<TD>Supports tethering to both Wifi and Cellular network. No issues switching.<TD>Works well with Dexcom G5 and xDrip. No issues with compatibility. 90%+ capture rate.
 <TR><TH>Google Pixel with Android 7<TD>Yes<TD>Supports tethering to both Wifi and Cellular network. No issues switching.<TD>Works well with Dexcom G5 and xDrip. No issues with compatibility. 90%+ capture rate.
 <TR><TH>Sony Xperia Z5 Compact with Android 7<TD>Yes<TD>Works with tethering for network access. It regularly disconnects from the rig (which doesn't seem to affect data flow) and roughly every 24-36 hours this results in complete loss of connectivity and requires a full reboot of the rig and the phone. Doesn't work well with phone swapping between Wifi and mobile - causes BT dropouts that require a reboot of the rig.<TD>No issues running xDrip/xDripAPS alongside the tethered connection. Achieves 90%+ packet collection from Dexcom G5. 
 <TR><TH>Xiaomi Redmi 4 with MIUI 8 (Android 6)<TD>No<TD>Tethering can be set up, but it drops regularly requiring rig reboots. When phone switches between Wifi and cellular signal requires rig to be rebooted.<TD>Significant packet drops and data becomes almost unusable.
+<TR><TH>Xiaomi Redmi Note 4(X) -Snapdragon SoC version!!!<TD>Yes<TD>Tethering works in same time with Blukon(Nightrider) and SW3 connected. Also, read Notes for MIUI below*<TD>Excellent coverage.
 <TR><TH>Xiaomi Redmi 3 with MIUI 6 (Android 5)<TD>Yes<TD>No issues seen when tethered to cellular network. Doesn't allow tethering to wifi.<TD>Works fine with Dexcom G5 - 90% collection rate.
 <TR><TH>Samsung Galaxy S6 (Android 7)<TD>Yes<TD>Tethering to rig and cellular works okay. No data on swapping between cellular and wifi connections.<TD>Use with Dexcom G5 and rig not effective. Significant packet loss.
 <TR><TH>Samsung Galaxy Junior<TD>Yes<TD>Phone tethering switching between wifi and mobile not elegant and causes some issues<TD>Difficulties found when using xDrip with the OpenAPS tethering. Packet loss occurs.
@@ -39,7 +41,19 @@ A few things to know about using your phone's hotspot feature:
 <TR><TH>Acer Phone<TD>No<TD>Many data drops on the bluetooth connection for rig. Recommended to avoid.<TD>xDrip compatibility is poor - numerous drops throughout the day.
 <TR><TH>Samsumg Galaxy S7 Edge (G935F) Android 7.0<TD>Yes<TD>Excellent BT tether using apps 'Bt AutoTether' and 'BT Tether'<TD>xDrip+ with G5 > 95% capture.
 <TR><TH>Samsung Galaxy A3 (2016) Android 6<TD>Yes<TD>Excellent BT tether using app 'Blue Car Tethering'<TD>xDrip+ with G4, reliable capture using xDrip+ and using normal tether when running with Dexcom in G4-upload mode
+<TR><TH>Elephone P9000 Android 7<TD>Yes<TD>Seems to work well, switching on/off BT tehethering as expected. Using 'Blue Car Tethering' with rig selected. Tested with phone screen off, works fine<TD></TABLE>
+<TR><TH>Samsung Galaxy A5 (2017) Android 7.0<TD>Yes<TD>Excellent BT tether, intermitent disconnecting when the area is flooded with other bluetooth devices. Use 'BT AutoTether' app along side to maintain connection<TD>xDrip+ with G5, works really well with G5 transmitter directly, no compatibility issues and 95%+ consistent capture rate.
 </TABLE>
+
+**********************************************************************************************
+*Notes for MIUI users. MIUI kills processes in background to save battery. To get best results:
+* get Xiaomi with SD (Snapdragon) SoC. It works better than it's MTK counterpart
+* install BTAutoTether
+* Settings-->Permissions-->Autostart (Turn it on for BTAutoTether)
+* Settings-->Permissions-->Other persmissions (Find BTAutoTether and make sure that all permissions are ticked for this app)
+* Hit Recents button (left button in bottom row of your phone) and find BTAutoTether, swipe it down and you'll see Lock and Info icon. Press Lock icon
+**********************************************************************************************
+
 
 ## Configure Bluetooth tethering on Edison running Jubilinux [optional]
 
@@ -69,6 +83,10 @@ root@edisonhost:~# bluetoothd --version
 
 ### Bluetooth setup
 
+* Stop cron to make sure oref0-online doesn't interfere:
+
+`sudo service cron stop`
+
 * Restart the Bluetooth daemon to start up the bluetooth services.  (This is normally done automatically by oref0-online once everything is set up, but we want to do things manually this first time):
 
 `sudo killall bluetoothd`
@@ -82,7 +100,7 @@ As shown in the "success" section below, you should see a single line returned w
 * Wait at least 10 seconds, and then run:  
 `sudo hciconfig hci0 name $HOSTNAME`
 
-* If you get a `Can't change local name on hci0: Network is down (100)` error, start over with `sudo killall bluetoothd` and wait longer between steps.
+* If you get a `Can't change local name on hci0: Network is down (100)` error, run `bluetoothctl`, then `power off` and `power on`, then `exit` and try `sudo hciconfig hci0 name $HOSTNAME` again.
 
 * Now launch the Bluetooth control program: `bluetoothctl`
 
@@ -146,18 +164,6 @@ Device AA:BB:CC:DD:EE:FF Samsung S7
 
 ### Testing to make sure it works after you successfully did the above
 
-* Before testing your connection, first restart the Bluetooth daemon again:
-
-  `sudo killall bluetoothd`
-
-* Wait a few seconds, and run it again, until you get `bluetoothd: no process found` returned.  Then start it back up again:
-
-  `sudo /usr/local/bin/bluetoothd --experimental &`
-
-* Wait at least 10 seconds, and then run: `sudo hciconfig hci0 name $HOSTNAME`
-
-* If you get a `Can't change local name on hci0: Network is down (100)` error, start over with `killall` and wait longer between steps.
-
 * Make sure your phone's hotspot is enabled, but don't let anything connect via wifi (you have to switch on the personal hotspot toggle, but then immediately back out of the personal hotspot screen before anything connects to your hotspot via wifi).
 
 * Now, try to establish a Bluetooth Network connection with your phone:
@@ -180,6 +186,10 @@ bnep0     Link encap:Ethernet  HWaddr 98:4f:ee:03:a6:91
 * To disconnect the connection, you can run:
 
   `sudo bt-pan client -d AA:BB:CC:DD:EE:FF`
+  
+* Now, re-enable the cron service so oref0-online runs automatically every minute:
+
+  ` sudo service cron start`
 
 * Next, to test that Bluetooth starts up automatically, you can shut down your wifi for 2-3 minutes by running:
 

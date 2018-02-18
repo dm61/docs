@@ -7,7 +7,7 @@ NOTE OF CAUTION:
 
 ## Only run oref1 with the following caveats in mind: 
 
-* Remember that you are choosing to test a still-in-development feature. Do so at your own risk & with due diligence to keep yourself safe. The number one rule (and the first pass phrase for enabling oref1 features) is "s@fety".
+* Remember that you are choosing to test a still-in-development feature. Do so at your own risk & with due diligence to keep yourself safe. 
 * You should have run oref0 (basic OpenAPS looping) for more than two weeks, and be very aware of all the types of situations in which your rig might fail.
 * **We are requiring that you also have run autotune prior to enabling SMB.** Why? Because if you have wonky ISF settings, for example, you may be more likely to go low or high with SMB. It will help a lot to have run autotune and be aware if the algorithm is recommending changes to ISF, basal, and/or carb ratio. You are not required to run autotune automatically/nightly as part of your loop with SMB; but you should at least run it manually and get an idea for how confident you are in your settings being right or not; and keep that in mind when evaluating SMB outcomes for yourself.
 * You should have basals of > 0.5 U/hr. (SMB is *not* advisable for those with very small basals; since 0.1U is the smallest increment that can be bolused by SMB.  We also added a basal check to disable SMB when basals are < 0.3 U/hr.  If your "regular" basal in the pump is 0.3 U/hr and autosens or autotune has adjusted your basal rate to below 0.3 U/hr, SMBs will be disabled as well.)
@@ -22,6 +22,8 @@ NOTE OF CAUTION:
 
 ## Understanding SMB
 
+<strong>SMB:</strong> Super Micro Bolus
+
 SMB, like all things in OpenAPS, is designed with safety in mind. (Did you skip reading the updated reference design? Go read that first!) SMB is designed to give you reasonably SAFE amounts of bolus needed upfront and use reduced temporary basal rates to safely balance out the peak insulin timing. You are likely to see many long low or zero temps (upwards of 120 minutes long) with SMB turned on, while oref1 is administering SMBs or waiting until it's safe to do so. 
 
 Single SMB amounts are limited by several factors.  The largest a single SMB bolus can be is the SMALLEST value of:
@@ -30,9 +32,15 @@ Single SMB amounts are limited by several factors.  The largest a single SMB bol
 * 1/3 of the Insulin Required amount, or
 * the remaining portion of your maxIOB setting in preferences
 
+It's important to note that maxIOB will limit SMBs from being issued if your IOB (for instance, from an easy bolus you have inputted before a meal) exceeds your maxIOB. So if your maxIOB is relatively low and you are running high post-meal, you may want to examine your logs to see if it is routinely preventing SMBs.
+
+In addition, as of 0.6.0-master, using Bolus Wizard to input boluses and meal carbs is no longer recommended because of the possibility of errors when the rig attempts to issue an SMB while Bolus Wizard is in use. Instead, many users [use IFTTT to notify their rig of upcoming carbs](http://openaps.readthedocs.io/en/latest/docs/Customize-Iterate/ifttt-integration.html).
+
 (History of SMB development: https://github.com/openaps/oref0/issues/262)
 
 ## Understanding UAM 
+
+<strong>UAM:</strong> Un-announced meal
 
 UAM will be triggered if the preference is toggled on and there is carb activity detected based on positive deviations. 
 
@@ -40,7 +48,7 @@ UAM will be triggered if the preference is toggled on and there is carb activity
 
 ## How to turn on SMB/UAM
 
-* As of July 13, 2017, SMB/UAM are in the master branch of oref0 (oref0 0.5.0). They are under the advanced features menu, and require you to read these docs carefully from top to bottom on this page in order to enable it during the setup script. Afterward, you also need to turn on the relevant settings in preferences.json. You may want to experiment with turning only one of them on at a time so you can closely observe the behavior (via both Nightscout and pump-loop.log) in the enabled situation. In addition to testing oref1 in "normal" situations, pay special attention to how it behaves in more extreme situations, such as with rescue carbs (announced or not), post-meal activity, etc. 
+* As of July 13, 2017, SMB/UAM are in the master branch of oref0 (oref0 0.5.0 and later). In oref0 0.6.0 and later, you will enable SMBs by adding the related preferences to your preferences.json. You may want to experiment with turning only one of them on at a time so you can closely observe the behavior (via both Nightscout and pump-loop.log) in the enabled situation. In addition to testing oref1 in "normal" situations, pay special attention to how it behaves in more extreme situations, such as with rescue carbs (announced or not), post-meal activity, etc. 
 
 There are multiple preference toggles for SMB/UAM. Check out the [preferences page](http://openaps.readthedocs.io/en/latest/docs/While%20You%20Wait%20For%20Gear/preferences-and-safety-settings.html#advanced-oref1-preferences) for more details on all the settings, but the short version is:
 
@@ -52,13 +60,13 @@ There are multiple preference toggles for SMB/UAM. Check out the [preferences pa
  Conversely, a higher temp target (101 if your target is 100) will disable SMB. 
 ```
 
-* To test UAM, you'll need to toggle to "true" the enableUAM in preferences.json. UAM can be enabled without SMB, but it won't be very effective without enableSMB_with_bolus. You'll probably also want to make sure your nightscout is updated to the latest version to make sure that you can take advantage of UAM prediction lines. To test UAM, you'll first want to be familiar with SMB's "normal" behavior (related, the second safety phrase you need to know is "gate"), and then test, with a small meal, giving an up-front bolus (of more than 30m worth of basal, so it can be distinguished from an SMB) and not entering carbs. You'll probably also want to do an "eating soon mode" temporary target or bolus beforehand. You can then observe, by watching the NS purple line predictions and the pump-loop.log, whether your OpenAPS rig is SMB'ing appropriately when it starts to see UAM carb impact.
+* To test UAM, you'll need to toggle to "true" the enableUAM in preferences.json. UAM can be enabled without SMB, but it won't be very effective without enableSMB_with_bolus. You'll probably also want to make sure your nightscout is updated to the latest version to make sure that you can take advantage of UAM prediction lines. To test UAM, you'll first want to be familiar with SMB's "normal" behavior, and then test, with a small meal, giving an up-front bolus (of more than 30m worth of basal, so it can be distinguished from an SMB) and not entering carbs. You'll probably also want to do an "eating soon mode" temporary target or bolus beforehand. You can then observe, by watching the NS purple line predictions and the pump-loop.log, whether your OpenAPS rig is SMB'ing appropriately when it starts to see UAM carb impact.
 
 ## Troubleshooting
 
 1. Make sure you read the above, especially the "only enable oref1 if..." section. SMB will behave differently than oref0 would. Watch carefully, and use your common sense and do what's right for you & your diabetes. 
 2. Common errors include:
-* Not changing the preferences to be "true" for the relevant settings after you've enabled the oref1 features. You should see "Starting supermicrobolus pump-loop at..." in pump-loop.log if you have successfully enabled everything.
+* Not changing the preferences to be "true" for the relevant settings after you've enabled the oref1 features. 
 * Not running autotune. Remember, you don't have to enable it to run as part of your loop at night, but you should run it manually, review the results, and otherwise be VERY confident in your underlying pump settings (basals, ISF, carb ratio) before using oref1.
 * Pump clock being >1 minute off from rig's time. This means 60 seconds. Not 61 seconds; 68 seconds; 90 seconds. Needs to be less than 60 seconds apart. `"Checking pump clock: "2017-05-16T15:46:32-04:00" is within 1m of current time: Tue May 16 15:47:40 EDT 2017` is an example of a >60 second gap that needs fixing before it will work properly. We added a script to automatically attempt to fix the pump time in case of a >60 second difference, but you may occasionally see this type of error in the logs until the script is able to properly adjust the pump time.
 
